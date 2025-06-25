@@ -1,44 +1,4 @@
-<?php
-ob_start();                    
-session_start();               
-error_reporting(E_ALL);        
-ini_set('display_errors', 1);  
 
-include "../../connection.php";
-
-$error = "";
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
-    $username = mysqli_real_escape_string($conn, $_POST['username']);
-    $password = mysqli_real_escape_string($conn, $_POST['password']);
-
-    $query = "SELECT * FROM baris_userlogin 
-              WHERE db_userLoginName = '$username' 
-              AND db_usertype = 'SU_admin' 
-              LIMIT 1";
-
-    $result = mysqli_query($conn, $query);
-
-    if ($result && mysqli_num_rows($result) === 1) {
-        $user = mysqli_fetch_assoc($result);
-
-        if (password_verify($password, $user['db_password'])) {
-            $_SESSION['user_id'] = $user['userId'];
-            $_SESSION['username'] = $user['db_userLoginName'];
-            $_SESSION['usertype'] = $user['db_usertype'];
-            
-            
-
-            header("Location: dashboard.php");
-            exit;
-        } else {
-            $error = "Invalid username or password.";
-        }
-    } else {
-        $error = "Invalid username or password.";
-    }
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
