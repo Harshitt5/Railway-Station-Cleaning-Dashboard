@@ -1,3 +1,32 @@
+<?php
+
+session_start();
+
+include "../../connection.php";
+
+$sql = "SELECT userId, db_userLoginName, db_username, db_phone, db_email, reportType, OrgID, DivisionId, StationId ,login_token FROM baris_userlogin where db_usertype= 'owner'";
+$result = $conn->query($sql);
+
+// Get user type distribution for chart
+$userTypeQuery = "SELECT db_usertype, COUNT(*) as count FROM baris_userlogin WHERE db_usertype IS NOT NULL GROUP BY db_usertype";
+$userTypeResult = $conn->query($userTypeQuery);
+
+$userTypes = [];
+$userCounts = [];
+$chartColors = [
+  '#3b82f6', // blue
+  '#6366f1', // indigo
+  '#a855f7', // purple
+  '#ec4899', // pink
+  '#f43f5e', // rose
+  '#10b981' // emerald
+];
+
+while($row = $userTypeResult->fetch_assoc()) {
+  $userTypes[] = $row['db_usertype'];
+  $userCounts[] = $row['count'];
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -194,7 +223,7 @@
               <i class="fas fa-users text-xl"></i>
             </div>
             <div class="mt-2">
-              <h3 class="text-3xl font-bold"></h3>
+              <h3 class="text-3xl font-bold"><?php echo $result->num_rows; ?></h3>
               <p class="text-gray-500 text-sm">Total Users</p>
             </div>
             <div class="mt-4 flex items-center text-sm">
