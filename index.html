@@ -9,15 +9,17 @@
 <body>
   <div class="container">
     <div class="left-panel">
-      <form class="login-form" action="dashboard.html" method="GET">
+      <form class="login-form" onsubmit="redirectToDashboard(); return false;">
         <h2>Log In to <span class="highlight">Station Cleaning</span></h2>
 
         <div class="input-group">
           <label>Username</label>
+          <input type="text" name="username"/>
         </div>
 
         <div class="input-group">
           <label>Password</label>
+          <input type="password" name="password" id="password"/>
         </div>
 
         <div class="toggle-password">
@@ -44,6 +46,10 @@
     function togglePassword() {
       const passwordInput = document.getElementById('password');
       passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+    }
+
+    function redirectToDashboard() {
+      window.location.href = 'dashboard.html';
     }
   </script>
 </body>
